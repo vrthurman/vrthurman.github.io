@@ -76,6 +76,12 @@ a.card .go b{color:var(--signal)}
 }
 .lock.open{background:var(--signal);color:var(--black-1000)}
 
+.updated{
+  margin-top:26px;display:inline-flex;align-items:baseline;gap:12px;
+  border:1px solid var(--gray-300);background:var(--white);padding:12px 18px;
+}
+.updated strong{font-weight:700;font-size:15px;letter-spacing:-.01em}
+
 footer{border-top:1px solid var(--gray-300);padding:22px 0 40px}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (prefers-reduced-motion: reduce){*{transition:none !important}}
@@ -87,7 +93,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="wrap">
     <span class="label">Samsara · Product Design · Vanessa Thurman</span>
     <h1>design ops<span class="owl">.</span></h1>
-    <p class="dek">The operational side of the Samsara design team — live project plans, event guides, and the tools that keep the work moving.</p>
+    <div class="updated" id="updated"><span class="label">Last updated</span><strong id="updated-date">—</strong></div>
   </div>
 </header>
 
@@ -103,19 +109,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <span class="go">open guide <b>→</b></span>
       </a>
 
-      <a class="card" href="/samsara-design-plan/">
-        <span class="lock open">Public</span>
+      <a class="card" href="https://samsara-design.pages.dev/project-plan">
+        <span class="lock">Log in</span>
         <span class="label">Project · MVP Aug 31, 2026</span>
         <strong>samsara.design — project plan</strong>
-        <p>The living plan for the design team's talent brand site: scope, team, timeline, gates, and risks.</p>
-        <span class="go">read the plan <b>→</b></span>
-      </a>
-
-      <a class="card" href="https://samsara-design.pages.dev/project-plan">
-        <span class="lock">Password</span>
-        <span class="label">Team tool · Collaborative</span>
-        <strong>Team plan — live</strong>
-        <p>The shared, editable version: statuses, comments, task checklists, and version history sync for the whole team.</p>
+        <p>The team's living plan: scope, timeline, statuses, comments, task checklists, and version history — shared and editable.</p>
         <span class="go">open team plan <b>→</b></span>
       </a>
 
@@ -137,6 +135,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <span class="label">questions? reach out to Vanessa</span>
   </div>
 </footer>
+
+<script>
+// Last-updated widget: latest commit to this site's repo, with a
+// baked-in fallback if the API is unavailable.
+(function () {
+  var out = document.getElementById("updated-date");
+  var fallback = document.lastModified ? new Date(document.lastModified) : null;
+  function show(d) {
+    out.textContent = d.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
+  }
+  fetch("https://api.github.com/repos/vrthurman/vrthurman.github.io/commits?per_page=1")
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (j) { show(new Date(j[0].commit.committer.date)); })
+    .catch(function () { if (fallback && !isNaN(fallback)) show(fallback); else out.textContent = "recently"; });
+})();
+</script>
 
 </body>
 </html>
