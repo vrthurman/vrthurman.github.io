@@ -14,12 +14,21 @@
   --gray-100:#F5F4F1;
   --gray-200:#EAE8E3;
   --gray-300:#E0DDD5;
+  --gray-400:#CCC9C1;
   --gray-500:#B9B6AD;
   --gray-600:#9C9890;
   --gray-700:#716F67;
   --gray-800:#403D37;
   --black-1000:#1C1917;
   --white:#FFFFFF;
+  --emerald:#01B665;
+  --emerald-50:#CCF0E0;
+  --red:#EE2B35;
+  --red-50:#FCD5D7;
+  --orange:#FF6319;
+  --orange-50:#FFE0D1;
+  --sky-50:#D9F3FA;
+  --lime-50:#EBFADA;
   --sans:'Instrument Sans',Helvetica,Arial,sans-serif;
   --mono:ui-monospace,'SF Mono',Menlo,monospace;
   --ease:cubic-bezier(.22,.61,.2,1);
@@ -35,56 +44,131 @@ body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:99;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
 }
-.wrap{max-width:960px;margin:0 auto;padding:0 clamp(20px,4vw,48px);width:100%}
+.wrap{max-width:1020px;margin:0 auto;padding:0 clamp(20px,4vw,48px);width:100%}
 .label{
   font-family:var(--mono);font-weight:500;font-size:11px;
   letter-spacing:.14em;text-transform:uppercase;color:var(--gray-700);
 }
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
-header{padding:clamp(64px,12vw,140px) 0 clamp(36px,6vw,64px)}
+header{padding:clamp(52px,9vw,110px) 0 clamp(28px,4vw,44px)}
 header .label{display:block;margin-bottom:20px}
-h1{
-  font-weight:700;font-size:clamp(48px,10vw,110px);
-  line-height:.96;letter-spacing:-.03em;
-}
+h1{font-weight:700;font-size:clamp(46px,9vw,100px);line-height:.96;letter-spacing:-.03em}
 h1 .owl{color:var(--signal)}
-p.dek{margin-top:24px;font-size:clamp(16px,2vw,19px);color:var(--gray-800);max-width:52ch}
-
-main{flex:1;padding-bottom:clamp(56px,9vw,110px)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-a.card{
-  display:flex;flex-direction:column;gap:10px;
-  background:var(--white);border:1px solid var(--gray-300);
-  padding:26px 26px 22px;text-decoration:none;color:inherit;position:relative;
-  transition:border-color .2s var(--ease),transform .22s var(--ease);
-}
-a.card:hover{border-color:var(--black-1000);transform:translateY(-3px)}
-a.card .label{color:var(--gray-600)}
-a.card strong{font-weight:700;font-size:clamp(19px,2.4vw,24px);letter-spacing:-.01em;line-height:1.15}
-a.card p{font-size:14px;color:var(--gray-700);line-height:1.45}
-a.card .go{
-  margin-top:auto;padding-top:14px;
-  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--gray-600);transition:color .18s var(--ease);
-}
-a.card:hover .go{color:var(--black-1000)}
-a.card .go b{color:var(--signal)}
-.lock{
-  position:absolute;top:22px;right:22px;
-  font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
-  background:var(--black-1000);color:var(--gray-100);padding:3px 7px;
-}
-.lock.open{background:var(--signal);color:var(--black-1000)}
-
 .updated{
-  margin-top:26px;display:inline-flex;align-items:baseline;gap:12px;
-  border:1px solid var(--gray-300);background:var(--white);padding:12px 18px;
+  margin-top:24px;display:inline-flex;align-items:baseline;gap:12px;
+  border:1px solid var(--gray-300);background:var(--white);padding:11px 17px;
 }
 .updated strong{font-weight:700;font-size:15px;letter-spacing:-.01em}
 
-footer{border-top:1px solid var(--gray-300);padding:22px 0 40px}
+main{flex:1;padding-bottom:clamp(56px,9vw,100px)}
+.sec{margin-top:clamp(30px,5vw,52px)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.sec-head h2{font-weight:700;font-size:clamp(20px,2.6vw,26px);letter-spacing:-.01em}
+.sec-head .hint{font-size:13px;color:var(--gray-600)}
+
+/* status legend */
+.legend{display:flex;gap:14px;margin-left:auto;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-600)}
+.legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* project board */
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+a.card{
+  display:flex;flex-direction:column;gap:9px;
+  background:var(--white);border:1px solid var(--gray-300);border-top:3px solid var(--gray-400);
+  padding:22px 24px 18px;text-decoration:none;color:inherit;position:relative;
+  transition:border-color .2s var(--ease),transform .22s var(--ease);
+}
+a.card:hover{border-color:var(--black-1000);border-top-color:inherit;transform:translateY(-3px)}
+a.card .label{color:var(--gray-600)}
+a.card strong{font-weight:700;font-size:clamp(18px,2.2vw,22px);letter-spacing:-.01em;line-height:1.15}
+a.card p{font-size:13.5px;color:var(--gray-700);line-height:1.45}
+a.card .go{
+  margin-top:auto;padding-top:12px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-600);
+  transition:color .18s var(--ease);
+}
+a.card:hover .go{color:var(--black-1000)}
+a.card .go b{color:var(--signal)}
+.badges{position:absolute;top:18px;right:20px;display:flex;gap:6px}
+.status,.lock{
+  font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 7px;
+}
+.lock{background:var(--black-1000);color:var(--gray-100)}
+.status.s-track{background:var(--emerald-50);color:#02613a}
+.status.s-build{background:#FFF3D6;color:#7a5200}
+.status.s-risk{background:var(--orange-50);color:#9c3200}
+.status.s-blocked{background:var(--red-50);color:#8a1218}
+.status.s-wrapped{background:var(--gray-200);color:var(--gray-700)}
+.card.s-track{border-top-color:var(--emerald)}
+.card.s-build{border-top-color:var(--signal)}
+.card.s-risk{border-top-color:var(--orange)}
+.card.s-blocked{border-top-color:var(--red)}
+.card.s-wrapped{border-top-color:var(--gray-400)}
+
+/* backlog board */
+.pitch-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+#pitch-open{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--black-1000);color:var(--gray-100);padding:10px 16px;
+  transition:background .2s var(--ease),transform .2s var(--ease);
+}
+#pitch-open:hover{background:var(--gray-800);transform:translateY(-1px)}
+#pitch-open b{color:var(--signal)}
+
+.pitch-form{
+  background:var(--white);border:1px solid var(--signal);padding:20px;margin-bottom:20px;
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.pitch-form.hidden{display:none}
+.pitch-form label{display:flex;flex-direction:column;gap:5px}
+.pitch-form label span{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-700)}
+.pitch-form label span i{color:var(--red);font-style:normal}
+.pitch-form input,.pitch-form select,.pitch-form textarea{
+  font:inherit;font-size:14px;border:1px solid var(--gray-300);padding:8px 10px;background:var(--gray-100);
+}
+.pitch-form input:focus,.pitch-form select:focus,.pitch-form textarea:focus{outline:2px solid var(--signal);outline-offset:-1px}
+.pitch-form .full{grid-column:1/-1}
+.pitch-form textarea{resize:vertical;min-height:70px}
+.pitch-actions{grid-column:1/-1;display:flex;gap:10px;align-items:center}
+.pitch-actions button[type=submit]{
+  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--black-1000);color:var(--gray-100);padding:9px 16px;
+}
+.pitch-actions button[type=submit]:hover{background:var(--gray-800)}
+.pitch-actions .cancel{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-600)}
+.pitch-error{font-size:12.5px;color:#8a1218}
+.pitch-count{font-family:var(--mono);font-size:9.5px;color:var(--gray-500);letter-spacing:.06em}
+
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.note{
+  position:relative;background:var(--white);border:1px solid var(--gray-300);
+  padding:20px 16px 14px;box-shadow:0 6px 16px rgba(28,25,23,.07);
+  transition:transform .22s var(--ease),box-shadow .22s var(--ease);
+}
+.note:hover{transform:rotate(0deg) translateY(-3px) !important;box-shadow:0 12px 26px rgba(28,25,23,.12)}
+.note::before{
+  content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  width:12px;height:12px;border-radius:50%;background:var(--signal);
+  box-shadow:0 2px 5px rgba(28,25,23,.3);
+}
+.note.c-tooling{background:var(--sky-50)}
+.note.c-site{background:#FFF6DE}
+.note.c-event{background:var(--lime-50)}
+.note.c-process{background:var(--gray-200)}
+.note.c-wildcard{background:var(--orange-50)}
+.note .cat{font-family:var(--mono);font-size:8.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-700)}
+.note h3{font-weight:700;font-size:15.5px;line-height:1.25;letter-spacing:-.01em;margin:5px 0 7px}
+.note p{font-size:12.5px;line-height:1.45;color:var(--gray-800)}
+.note .meta{margin-top:12px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-600)}
+.notes-empty,.notes-error{grid-column:1/-1;font-size:14px;color:var(--gray-600);padding:26px;border:1px dashed var(--gray-400);text-align:center}
+
+footer{border-top:1px solid var(--gray-300);padding:22px 0 40px;margin-top:40px}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+@media(max-width:640px){.pitch-form{grid-template-columns:1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none !important}.note{transform:none !important}}
 </style>
 </head>
 <body>
@@ -99,33 +183,55 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 <main>
   <div class="wrap">
-    <div class="cards">
 
-      <a class="card" href="https://pd-onsite-2026.pages.dev/">
-        <span class="lock">Log in</span>
-        <span class="label">Event · Jul 21–23, 2026</span>
-        <strong>PD Onsite 2026</strong>
-        <p>Participant guide for the San Francisco onsite — agenda, hackathon tracks, dinners, and logistics.</p>
-        <span class="go">open guide <b>→</b></span>
-      </a>
+    <section class="sec">
+      <div class="sec-head">
+        <h2>Active projects</h2>
+        <div class="legend">
+          <span><i style="background:var(--emerald)"></i>on track</span>
+          <span><i style="background:var(--signal)"></i>in build</span>
+          <span><i style="background:var(--orange)"></i>at risk</span>
+          <span><i style="background:var(--red)"></i>blocked</span>
+          <span><i style="background:var(--gray-400)"></i>wrapped</span>
+        </div>
+      </div>
+      <div class="board" id="board"></div>
+    </section>
 
-      <a class="card" href="https://samsara-design.pages.dev/project-plan">
-        <span class="lock">Log in</span>
-        <span class="label">Project · MVP Aug 31, 2026</span>
-        <strong>samsara.design — project plan</strong>
-        <p>The team's living plan: scope, timeline, statuses, comments, task checklists, and version history — shared and editable.</p>
-        <span class="go">open team plan <b>→</b></span>
-      </a>
+    <section class="sec">
+      <div class="sec-head">
+        <h2>Backlog</h2>
+        <span class="hint">ideas pitched to the ops team — pin yours to the board</span>
+      </div>
+      <div class="pitch-bar">
+        <button id="pitch-open" type="button"><b>+</b>&nbsp; pitch an idea</button>
+      </div>
 
-      <a class="card" href="https://samsara-design.pages.dev">
-        <span class="lock">Password</span>
-        <span class="label">Staging · In progress</span>
-        <strong>samsara.design — prototype</strong>
-        <p>The site itself, on staging. Direction and build evolve through Friday crits until the Aug 31 launch.</p>
-        <span class="go">view staging <b>→</b></span>
-      </a>
+      <form class="pitch-form hidden" id="pitch-form" novalidate>
+        <label><span>Idea title <i>*</i></span><input name="title" maxlength="90" placeholder="Give it a headline" required></label>
+        <label><span>Your name <i>*</i></span><input name="by" maxlength="60" placeholder="So we know who to high-five" required></label>
+        <label><span>Category <i>*</i></span>
+          <select name="category" required>
+            <option value="">choose…</option>
+            <option value="tooling">tooling — make the team faster</option>
+            <option value="site">site — samsara.design ideas</option>
+            <option value="event">event — onsites, crits, rituals</option>
+            <option value="process">process — how we work</option>
+            <option value="wildcard">wildcard — surprise us</option>
+          </select>
+        </label>
+        <label class="full"><span>Why it matters <i>*</i></span><textarea name="why" maxlength="300" placeholder="One or two sentences: the problem it solves or the joy it sparks" required></textarea></label>
+        <div class="pitch-actions">
+          <button type="submit">pin it</button>
+          <button type="button" class="cancel" id="pitch-cancel">cancel</button>
+          <span class="pitch-error" id="pitch-error"></span>
+          <span class="pitch-count" id="pitch-count"></span>
+        </div>
+      </form>
 
-    </div>
+      <div class="notes" id="notes"><div class="notes-empty">loading the board…</div></div>
+    </section>
+
   </div>
 </main>
 
@@ -137,18 +243,195 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 </footer>
 
 <script>
-// Last-updated widget: latest commit to this site's repo, with a
-// baked-in fallback if the API is unavailable.
 (function () {
+  "use strict";
+
+  /* ——— active projects (edit statuses here) ——— */
+  var PROJECTS = [
+    {
+      title: "samsara.design — project plan",
+      label: "Project · MVP Aug 31, 2026",
+      desc: "The team's living plan: scope, timeline, statuses, comments, checklists, and history — shared and editable.",
+      href: "https://samsara-design.pages.dev/project-plan",
+      status: "track", statusLabel: "on track", lock: true, go: "open team plan",
+    },
+    {
+      title: "samsara.design — prototype",
+      label: "Staging · Friday crits",
+      desc: "The talent brand site itself, evolving on staging toward the Aug 31 launch.",
+      href: "https://samsara-design.pages.dev",
+      status: "build", statusLabel: "in build", lock: true, go: "view staging",
+    },
+    {
+      title: "PD Onsite 2026",
+      label: "Event · Jul 21–23, 2026",
+      desc: "Participant guide for the San Francisco onsite — agenda, hackathon tracks, dinners, logistics.",
+      href: "https://pd-onsite-2026.pages.dev/",
+      status: "wrapped", statusLabel: "wrapped", lock: true, go: "open guide",
+    },
+  ];
+
+  var board = document.getElementById("board");
+  PROJECTS.forEach(function (p) {
+    var a = document.createElement("a");
+    a.className = "card s-" + p.status;
+    a.href = p.href;
+    var badges = document.createElement("div");
+    badges.className = "badges";
+    var st = document.createElement("span");
+    st.className = "status s-" + p.status;
+    st.textContent = p.statusLabel;
+    badges.appendChild(st);
+    if (p.lock) {
+      var lk = document.createElement("span");
+      lk.className = "lock";
+      lk.textContent = "log in";
+      badges.appendChild(lk);
+    }
+    a.appendChild(badges);
+    var lab = document.createElement("span");
+    lab.className = "label";
+    lab.textContent = p.label;
+    a.appendChild(lab);
+    var strong = document.createElement("strong");
+    strong.textContent = p.title;
+    a.appendChild(strong);
+    var desc = document.createElement("p");
+    desc.textContent = p.desc;
+    a.appendChild(desc);
+    var go = document.createElement("span");
+    go.className = "go";
+    go.innerHTML = p.go + ' <b>→</b>';
+    a.appendChild(go);
+    board.appendChild(a);
+  });
+
+  /* ——— last updated ——— */
   var out = document.getElementById("updated-date");
-  var fallback = document.lastModified ? new Date(document.lastModified) : null;
   function show(d) {
     out.textContent = d.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
   }
   fetch("https://api.github.com/repos/vrthurman/vrthurman.github.io/commits?per_page=1")
     .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
     .then(function (j) { show(new Date(j[0].commit.committer.date)); })
-    .catch(function () { if (fallback && !isNaN(fallback)) show(fallback); else out.textContent = "recently"; });
+    .catch(function () {
+      var f = document.lastModified ? new Date(document.lastModified) : null;
+      if (f && !isNaN(f)) show(f); else out.textContent = "recently";
+    });
+
+  /* ——— backlog board ——— */
+  var API = "https://samsara-design.pages.dev/api/backlog";
+  var notes = document.getElementById("notes");
+
+  function rotFor(id) {
+    var h = 0;
+    for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) % 997;
+    return ((h % 30) - 15) / 10; // -1.5° … +1.4°
+  }
+
+  function renderNotes(items) {
+    notes.innerHTML = "";
+    if (!items.length) {
+      var empty = document.createElement("div");
+      empty.className = "notes-empty";
+      empty.textContent = "Nothing pitched yet. Be the first — the board remembers pioneers.";
+      notes.appendChild(empty);
+      return;
+    }
+    items.slice().reverse().forEach(function (it) {
+      var n = document.createElement("div");
+      n.className = "note c-" + it.category;
+      n.style.transform = "rotate(" + rotFor(it.id) + "deg)";
+      var cat = document.createElement("span");
+      cat.className = "cat";
+      cat.textContent = it.category;
+      n.appendChild(cat);
+      var h3 = document.createElement("h3");
+      h3.textContent = it.title;
+      n.appendChild(h3);
+      var p = document.createElement("p");
+      p.textContent = it.why;
+      n.appendChild(p);
+      var meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = "pinned by " + it.by + " · " + new Date(it.ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      n.appendChild(meta);
+      notes.appendChild(n);
+    });
+  }
+
+  function loadNotes() {
+    fetch(API)
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(renderNotes)
+      .catch(function () {
+        notes.innerHTML = "";
+        var err = document.createElement("div");
+        err.className = "notes-error";
+        err.textContent = "The board is napping (backlog service unreachable). Try again in a minute.";
+        notes.appendChild(err);
+      });
+  }
+  loadNotes();
+
+  /* ——— pitch form ——— */
+  var form = document.getElementById("pitch-form");
+  var openBtn = document.getElementById("pitch-open");
+  var errEl = document.getElementById("pitch-error");
+  var countEl = document.getElementById("pitch-count");
+  var why = form.querySelector("[name=why]");
+
+  openBtn.addEventListener("click", function () {
+    form.classList.toggle("hidden");
+    if (!form.classList.contains("hidden")) form.querySelector("[name=title]").focus();
+  });
+  document.getElementById("pitch-cancel").addEventListener("click", function () {
+    form.classList.add("hidden");
+    errEl.textContent = "";
+  });
+  why.addEventListener("input", function () {
+    countEl.textContent = why.value.length + "/300";
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    errEl.textContent = "";
+    var data = {
+      title: form.title.value.trim(),
+      by: form.by.value.trim(),
+      category: form.category.value,
+      why: form.why.value.trim(),
+    };
+    for (var k in data) {
+      if (!data[k]) {
+        errEl.textContent = "All fields are required — that's what keeps the board tidy.";
+        return;
+      }
+    }
+    var btn = form.querySelector("[type=submit]");
+    btn.disabled = true;
+    btn.textContent = "pinning…";
+    fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.j && res.j.error || "submission failed");
+        form.reset();
+        countEl.textContent = "";
+        form.classList.add("hidden");
+        loadNotes();
+      })
+      .catch(function (err2) {
+        errEl.textContent = String(err2.message || err2);
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = "pin it";
+      });
+  });
 })();
 </script>
 
