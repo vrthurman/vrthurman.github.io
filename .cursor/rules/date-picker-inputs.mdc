@@ -1,0 +1,21 @@
+---
+description: Any UI where a user enters a date must use a date picker widget, never free text
+alwaysApply: true
+---
+
+# Date Entry = Date Picker
+
+Anywhere the user enters a date (or date range), use a date picker widget — never a free-text input.
+
+- Prefer the native `<input type="date">` styled to the site's brand; it's clean, simple, accessible, and needs no dependencies.
+- Ranges get two pickers (start → end); swap silently if end < start.
+- If a display label is needed (e.g. "Aug 4–7"), compose it from the picked dates in code — don't ask the user to type it.
+
+```html
+<!-- ❌ BAD -->
+<input placeholder="date label" value="Aug 4–7">
+
+<!-- ✅ GOOD -->
+<input type="date" aria-label="start date"> →
+<input type="date" aria-label="end date">
+```

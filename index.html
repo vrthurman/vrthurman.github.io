@@ -53,13 +53,47 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 header{padding:clamp(52px,9vw,110px) 0 clamp(28px,4vw,44px)}
 header .label{display:block;margin-bottom:20px}
-h1{font-weight:700;font-size:clamp(46px,9vw,100px);line-height:.96;letter-spacing:-.03em}
-h1 .owl{color:var(--signal)}
+.stamp-zone{display:inline-block}
+h1{font-weight:700;font-size:clamp(46px,9vw,100px);line-height:.96;letter-spacing:-.03em;cursor:default;outline:none}
+h1 .owl{color:var(--signal);display:inline-block;transition:transform .4s var(--ease)}
+.stamp-zone:hover h1 .owl,h1:focus-visible .owl{transform:translateY(-.06em) scale(1.12)}
+
+/* last-updated: hidden terminal stamp, revealed by hovering the wordmark */
 .updated{
-  margin-top:24px;display:inline-flex;align-items:baseline;gap:12px;
-  border:1px solid var(--gray-300);background:var(--white);padding:11px 17px;
+  margin-top:16px;display:inline-flex;align-items:center;gap:9px;
+  background:var(--black-1000);color:var(--gray-100);padding:10px 15px;
+  font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  opacity:0;visibility:hidden;transform:translateY(-7px);
+  clip-path:inset(0 0 100% 0);
+  transition:
+    opacity .38s var(--ease),
+    transform .46s var(--ease),
+    clip-path .46s var(--ease),
+    visibility 0s linear .46s;
 }
-.updated strong{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.stamp-zone:hover .updated,h1:focus-visible+.updated,.updated:hover{
+  opacity:1;visibility:visible;transform:translateY(0);
+  clip-path:inset(-4px -4px -4px -4px);
+  transition:
+    opacity .3s var(--ease),
+    transform .42s var(--ease),
+    clip-path .42s var(--ease),
+    visibility 0s;
+}
+.u-prompt{color:var(--gray-600)}
+.u-prompt b{color:var(--signal);font-weight:700}
+.u-cmd{color:var(--gray-400)}
+.u-out{
+  color:var(--signal);font-weight:700;
+  opacity:0;transform:translateX(-4px);
+  transition:opacity .3s var(--ease) .12s,transform .34s var(--ease) .12s;
+}
+.stamp-zone:hover .u-out,h1:focus-visible+.updated .u-out,.updated:hover .u-out{opacity:1;transform:none}
+.u-caret{
+  width:7px;height:14px;background:var(--signal);flex:none;
+  animation:caret-blink 1.05s steps(1) infinite;
+}
+@keyframes caret-blink{50%{opacity:0}}
 
 main{flex:1;padding-bottom:clamp(56px,9vw,100px)}
 .sec{margin-top:clamp(30px,5vw,52px)}
@@ -101,12 +135,44 @@ a.card .go b{color:var(--signal)}
 .status.s-build{background:#FFF3D6;color:#7a5200}
 .status.s-risk{background:var(--orange-50);color:#9c3200}
 .status.s-blocked{background:var(--red-50);color:#8a1218}
-.status.s-wrapped{background:var(--gray-200);color:var(--gray-700)}
+.status.s-wrapped{
+  color:var(--gray-700);
+  background:repeating-linear-gradient(-45deg,var(--gray-200) 0 5px,#E3E0D9 5px 10px);
+}
 .card.s-track{border-top-color:var(--emerald)}
 .card.s-build{border-top-color:var(--signal)}
 .card.s-risk{border-top-color:var(--orange)}
 .card.s-blocked{border-top-color:var(--red)}
-.card.s-wrapped{border-top-color:var(--gray-400)}
+
+/* wrapped: the party's over but the bunting stays up.
+   Dimmed + faintly striped at rest; hover re-saturates the ribbon. */
+.card.s-wrapped{
+  border-top-color:transparent;
+  background:
+    repeating-linear-gradient(-45deg,rgba(28,25,23,.03) 0 12px,transparent 12px 24px),
+    var(--white);
+}
+.card.s-wrapped::after{
+  content:'';position:absolute;top:-3px;left:0;right:0;height:3px;
+  background:repeating-linear-gradient(90deg,
+    var(--emerald-50) 0 16px,#FFF3D6 16px 32px,var(--sky-50) 32px 48px,
+    var(--orange-50) 48px 64px,var(--lime-50) 64px 80px);
+  filter:saturate(.85);
+  transition:filter .3s var(--ease);
+}
+.card.s-wrapped strong,.card.s-wrapped p{color:var(--gray-600)}
+.card.s-wrapped .label,.card.s-wrapped .go{color:var(--gray-500)}
+.card.s-wrapped:hover::after{
+  filter:saturate(2.2);
+}
+.card.s-wrapped:hover{border-top-color:transparent}
+.card.s-wrapped:hover strong{color:var(--gray-700)}
+.legend .swatch-wrapped{
+  width:14px;height:8px;border-radius:2px;display:inline-block;
+  background:repeating-linear-gradient(90deg,
+    var(--emerald-50) 0 3px,#FFF3D6 3px 6px,var(--sky-50) 6px 9px,var(--orange-50) 9px 12px,var(--lime-50) 12px 15px);
+  border:1px solid var(--gray-300);
+}
 
 /* backlog board */
 .pitch-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px}
@@ -142,7 +208,49 @@ a.card .go b{color:var(--signal)}
 .pitch-error{font-size:12.5px;color:#8a1218}
 .pitch-count{font-family:var(--mono);font-size:9.5px;color:var(--gray-500);letter-spacing:.06em}
 
+.view-toggle{margin-left:auto;display:flex;border:1px solid var(--gray-300);background:var(--white)}
+.view-toggle button{
+  font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray-600);padding:8px 13px;
+  transition:background .18s var(--ease),color .18s var(--ease);
+}
+.view-toggle button:hover{color:var(--black-1000)}
+.view-toggle button.is-active{background:var(--black-1000);color:var(--gray-100)}
+.order-toast{
+  font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gray-600);opacity:0;transition:opacity .3s var(--ease);
+}
+.order-toast.show{opacity:1}
+.order-toast.err{color:#8a1218}
+
 .notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.note-grip{
+  position:absolute;top:6px;right:8px;cursor:grab;color:var(--gray-500);
+  font-size:12px;line-height:1;padding:2px;opacity:0;transition:opacity .18s var(--ease);
+}
+.note:hover .note-grip{opacity:1}
+.note-grip:active{cursor:grabbing}
+.note.dragging{opacity:.45}
+
+/* list view: same notes, laid flat */
+.notes.view-list{display:flex;flex-direction:column;gap:8px}
+.notes.view-list .note{
+  transform:none !important;box-shadow:none;
+  display:grid;grid-template-columns:14px 74px 1fr auto;align-items:center;gap:14px;
+  padding:12px 16px;
+}
+.notes.view-list .note::before{display:none}
+.notes.view-list .note .note-grip{position:static;order:-1;opacity:.55}
+.notes.view-list .note h3{margin:0;font-size:14px}
+.notes.view-list .note .body{min-width:0}
+.notes.view-list .note p{
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px;
+}
+.notes.view-list .note .meta{margin:0;white-space:nowrap}
+@media(max-width:640px){
+  .notes.view-list .note{grid-template-columns:14px 1fr;grid-auto-rows:auto}
+  .notes.view-list .note .meta{grid-column:2}
+}
 .note{
   position:relative;background:var(--white);border:1px solid var(--gray-300);
   padding:20px 16px 14px;box-shadow:0 6px 16px rgba(28,25,23,.07);
@@ -167,6 +275,9 @@ a.card .go b{color:var(--signal)}
 
 footer{border-top:1px solid var(--gray-300);padding:22px 0 40px;margin-top:40px}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.foot-dm{text-decoration:none;transition:color .18s var(--ease)}
+.foot-dm b{color:var(--signal);font-weight:700}
+.foot-dm:hover{color:var(--black-1000)}
 @media(max-width:640px){.pitch-form{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){*{transition:none !important}.note{transform:none !important}}
 </style>
@@ -175,9 +286,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 <header>
   <div class="wrap">
-    <span class="label">Samsara · Product Design · Vanessa Thurman</span>
-    <h1>design ops<span class="owl">.</span></h1>
-    <div class="updated" id="updated"><span class="label">Last updated</span><strong id="updated-date">—</strong></div>
+    <span class="label">Samsara · Product Design</span>
+    <div class="stamp-zone">
+      <h1 id="wordmark" tabindex="0" aria-describedby="updated">design ops<span class="owl">.</span></h1>
+      <div class="updated" id="updated" role="status">
+        <span class="u-prompt">~/design-ops&nbsp;<b>$</b></span>
+        <span class="u-cmd">stat&nbsp;--updated</span>
+        <span class="u-out" id="updated-date">—</span>
+        <span class="u-caret" aria-hidden="true"></span>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -192,7 +310,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
           <span><i style="background:var(--signal)"></i>in build</span>
           <span><i style="background:var(--orange)"></i>at risk</span>
           <span><i style="background:var(--red)"></i>blocked</span>
-          <span><i style="background:var(--gray-400)"></i>wrapped</span>
+          <span><i class="swatch-wrapped"></i>wrapped</span>
         </div>
       </div>
       <div class="board" id="board"></div>
@@ -205,6 +323,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       </div>
       <div class="pitch-bar">
         <button id="pitch-open" type="button"><b>+</b>&nbsp; pitch an idea</button>
+        <span class="order-toast" id="order-toast" role="status"></span>
+        <div class="view-toggle" aria-label="Backlog view">
+          <button type="button" data-bview="cards" class="is-active">cards</button>
+          <button type="button" data-bview="list">list</button>
+        </div>
       </div>
 
       <form class="pitch-form hidden" id="pitch-form" novalidate>
@@ -238,7 +361,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <footer>
   <div class="wrap">
     <span class="label">samsara design ops</span>
-    <span class="label">questions? reach out to Vanessa</span>
+    <a class="label foot-dm" href="https://samsara.slack.com/team/U07R9PCAKE3" target="_blank" rel="noopener" title="Open a Slack DM with Vanessa">questions? reach out to Vanessa <b>→</b></a>
   </div>
 </footer>
 
@@ -309,7 +432,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   /* ——— last updated ——— */
   var out = document.getElementById("updated-date");
   function show(d) {
-    out.textContent = d.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
+    var MO = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+    var days = Math.max(0, Math.floor((Date.now() - d.getTime()) / 86400000));
+    var rel = days === 0 ? "today" : days === 1 ? "1d ago" : days + "d ago";
+    out.textContent = MO[d.getMonth()] + " " + d.getDate() + " " + d.getFullYear() + " · " + rel;
   }
   fetch("https://api.github.com/repos/vrthurman/vrthurman.github.io/commits?per_page=1")
     .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
@@ -320,8 +446,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     });
 
   /* ——— backlog board ——— */
-  var API = "https://samsara-design.pages.dev/api/backlog";
+  var API = location.hostname === "localhost"
+    ? "http://localhost:8788/api/backlog"
+    : "https://samsara-design.pages.dev/api/backlog";
   var notes = document.getElementById("notes");
+  var toastEl = document.getElementById("order-toast");
+  var VIEW_KEY = "ops-backlog-view";
+  var PW_KEY = "ops-backlog-pw";
+  var toastTimer = null;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 3200);
+  }
 
   function rotFor(id) {
     var h = 0;
@@ -329,6 +469,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     return ((h % 30) - 15) / 10; // -1.5° … +1.4°
   }
 
+  /* view toggle (cards | list), remembered per browser */
+  function applyView(v) {
+    notes.classList.toggle("view-list", v === "list");
+    document.querySelectorAll(".view-toggle button").forEach(function (b) {
+      b.classList.toggle("is-active", b.dataset.bview === v);
+    });
+    localStorage.setItem(VIEW_KEY, v);
+  }
+  document.querySelectorAll(".view-toggle button").forEach(function (b) {
+    b.addEventListener("click", function () { applyView(b.dataset.bview); });
+  });
+  applyView(localStorage.getItem(VIEW_KEY) === "list" ? "list" : "cards");
+
+  /* board order = priority: top of the board (index 0) is highest */
   function renderNotes(items) {
     notes.innerHTML = "";
     if (!items.length) {
@@ -338,26 +492,110 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       notes.appendChild(empty);
       return;
     }
-    items.slice().reverse().forEach(function (it) {
+    items.forEach(function (it) {
       var n = document.createElement("div");
       n.className = "note c-" + it.category;
+      n.dataset.id = it.id;
       n.style.transform = "rotate(" + rotFor(it.id) + "deg)";
+      n.draggable = true;
+      var grip = document.createElement("span");
+      grip.className = "note-grip";
+      grip.title = "drag to reorder — top of the board = top priority";
+      grip.textContent = "⠿";
+      n.appendChild(grip);
       var cat = document.createElement("span");
       cat.className = "cat";
       cat.textContent = it.category;
       n.appendChild(cat);
+      var body = document.createElement("div");
+      body.className = "body";
       var h3 = document.createElement("h3");
       h3.textContent = it.title;
-      n.appendChild(h3);
+      body.appendChild(h3);
       var p = document.createElement("p");
       p.textContent = it.why;
-      n.appendChild(p);
+      body.appendChild(p);
+      n.appendChild(body);
       var meta = document.createElement("div");
       meta.className = "meta";
       meta.textContent = "pinned by " + it.by + " · " + new Date(it.ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
       n.appendChild(meta);
+
+      n.addEventListener("dragstart", function (e) {
+        dragEl = n;
+        n.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+        try { e.dataTransfer.setData("text/plain", it.id); } catch (_) {}
+      });
+      n.addEventListener("dragend", function () {
+        n.classList.remove("dragging");
+        dragEl = null;
+      });
+
       notes.appendChild(n);
     });
+  }
+
+  /* ——— drag to reorder (shared priority) ——— */
+  var dragEl = null;
+
+  function noteAfterPointer(x, y) {
+    var els = [].slice.call(notes.querySelectorAll(".note:not(.dragging)"));
+    for (var i = 0; i < els.length; i++) {
+      var r = els[i].getBoundingClientRect();
+      var sameRow = y >= r.top && y <= r.bottom;
+      if (y < r.top || (sameRow && x < r.left + r.width / 2)) return els[i];
+    }
+    return null;
+  }
+
+  notes.addEventListener("dragover", function (e) {
+    if (!dragEl) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    var after = noteAfterPointer(e.clientX, e.clientY);
+    if (after === dragEl) return;
+    notes.insertBefore(dragEl, after);
+  });
+
+  notes.addEventListener("drop", function (e) {
+    if (!dragEl) return;
+    e.preventDefault();
+    saveOrder();
+  });
+
+  function saveOrder() {
+    var order = [].slice.call(notes.querySelectorAll(".note")).map(function (n) {
+      return n.dataset.id;
+    });
+    var pw = sessionStorage.getItem(PW_KEY);
+    if (!pw) pw = prompt("Site password — saves this order for everyone:");
+    if (!pw) {
+      toast("order not saved", true);
+      loadNotes();
+      return;
+    }
+    fetch(API, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Basic " + btoa("ops:" + pw),
+      },
+      body: JSON.stringify({ order: order }),
+    })
+      .then(function (r) {
+        if (r.status === 401) {
+          sessionStorage.removeItem(PW_KEY);
+          throw new Error("wrong password — order not saved");
+        }
+        if (!r.ok) throw new Error("couldn't save order");
+        sessionStorage.setItem(PW_KEY, pw);
+        toast("order saved for everyone");
+      })
+      .catch(function (err) {
+        toast(String(err.message || "couldn't save order"), true);
+        loadNotes();
+      });
   }
 
   function loadNotes() {
