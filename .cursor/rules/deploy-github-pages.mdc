@@ -1,0 +1,11 @@
+---
+description: This site deploys via GitHub Pages — pushing to main IS the deploy; Cloudflare is only the API host
+alwaysApply: true
+---
+
+# Deploying this site
+
+- **vrthurman.github.io publishes via GitHub Pages.** `./deploy.sh "message"` commits, pushes to `vrthurman/vrthurman.github.io` main (handles the gh account switch), waits for the Pages build to report `built`, and verifies the live HTML. A change is NOT live until that whole chain completes.
+- **Never report "deployed" after only a Cloudflare deploy.** `samsara-design.pages.dev` (Cloudflare) hosts the APIs (`/api/backlog`, `/api/roster`, `/api/clips`) and the plan site — deploying it does not touch this site.
+- Most site changes need both: push here for the pages, `./deploy.sh` in `docs/plans/samsara-design-site` (backend repo) for API changes.
+- `.nojekyll` must stay in the repo root — it keeps GitHub from running Jekyll over the site (huge single-file tools like form-form make Jekyll builds slow/fragile).
