@@ -1,0 +1,12 @@
+---
+description: Never add taglines, hints, or microcopy Vanessa didn't ask for
+alwaysApply: true
+---
+
+# No Unsolicited Copy
+
+Do not add taglines, helper hints, subtitle blurbs, or decorative microcopy to this site unless Vanessa explicitly asked for that text.
+
+- Structural labels (button text, form placeholders, error messages) are fine — they're functional.
+- Editorial flourishes ("ideas pitched to the ops team — pin yours to the board") are not. If a section feels like it needs explanation, raise it; don't write it.
+- When in doubt, ship the design without the words.

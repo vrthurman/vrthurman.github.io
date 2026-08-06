@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>roster — samsara design ops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,800&text=0123456789&display=swap" rel="stylesheet">
+<style>
+:root{
+  --signal:#FEAE0F;
+  --gray-100:#F5F4F1;
+  --gray-200:#EAE8E3;
+  --gray-300:#E0DDD5;
+  --gray-400:#CCC9C1;
+  --gray-500:#B9B6AD;
+  --gray-600:#9C9890;
+  --gray-700:#716F67;
+  --gray-800:#403D37;
+  --black-1000:#1C1917;
+  --white:#FFFFFF;
+  --red:#EE2B35;
+  --sans:'Instrument Sans',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,monospace;
+  --ease:cubic-bezier(.22,.61,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--gray-100);color:var(--black-1000);
+  font-family:var(--sans);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;min-height:100vh;
+}
+.wrap{max-width:1020px;margin:0 auto;padding:0 clamp(20px,4vw,48px);width:100%}
+.label{
+  font-family:var(--mono);font-weight:500;font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gray-700);
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+header.site{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--gray-100) 92%,transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--gray-300);
+}
+header.site .wrap{display:flex;align-items:center;gap:24px;height:64px}
+header.site img.wordmark{height:14px;width:auto;display:block}
+nav.toc{display:flex;gap:2px;margin-left:auto;align-items:center}
+nav.toc a{
+  font-family:var(--mono);font-weight:500;font-size:10.5px;
+  letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;color:var(--gray-700);
+  padding:6px 10px;border-radius:2px;white-space:nowrap;
+  transition:background .18s var(--ease),color .18s var(--ease);
+}
+nav.toc a:hover{background:var(--gray-200);color:var(--black-1000)}
+nav.toc a.is-here{color:var(--black-1000);border-bottom:2px solid var(--signal);border-radius:0}
+
+main{padding:clamp(44px,7vw,84px) 0 clamp(64px,10vw,120px)}
+.sec-head{
+  display:flex;align-items:baseline;gap:clamp(16px,2.4vw,32px);flex-wrap:wrap;
+  margin-bottom:clamp(24px,3.5vw,40px);padding-bottom:clamp(14px,2vw,24px);
+  border-bottom:2px solid var(--black-1000);
+}
+.sec-head .num{
+  font-family:'Bricolage Grotesque',var(--sans);
+  font-weight:800;font-size:clamp(60px,8vw,100px);line-height:.8;letter-spacing:.01em;
+  color:transparent;-webkit-text-stroke:1.5px var(--black-1000);
+  font-variant-numeric:tabular-nums;user-select:none;
+}
+.sec-head h1{
+  font-weight:700;font-size:clamp(38px,5.5vw,64px);line-height:.9;
+  letter-spacing:-.03em;text-transform:lowercase;
+}
+.sec-head .tools{margin-left:auto;display:flex;gap:10px;align-items:center}
+.sec-head .tools button{
+  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray-600);padding:7px 12px;border:1px solid var(--gray-300);background:var(--white);
+  transition:color .18s var(--ease),border-color .18s var(--ease);
+}
+.sec-head .tools button:hover{color:var(--black-1000);border-color:var(--gray-600)}
+.sec-head .tools button.primary{background:var(--black-1000);color:var(--gray-100);border-color:var(--black-1000)}
+.sec-head .tools button.primary:hover{background:var(--gray-800)}
+.roster-toast{
+  font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gray-600);opacity:0;transition:opacity .3s var(--ease);
+}
+.roster-toast.show{opacity:1}
+.roster-toast.err{color:#8a1218}
+
+.team-label{margin:36px 0 14px}
+.people{display:flex;flex-direction:column}
+.person{
+  display:grid;grid-template-columns:220px 1fr auto;align-items:baseline;gap:20px;
+  padding:14px 2px;border-bottom:1px solid var(--gray-300);
+}
+.person strong{font-weight:700;font-size:19px;letter-spacing:-.01em}
+.person .title{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--gray-700)}
+.person .loc{
+  font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray-600);border:1px solid var(--gray-300);padding:2px 7px;
+}
+.people.editing .person{grid-template-columns:200px 1fr 120px 80px auto;align-items:center}
+.person input{
+  font:inherit;font-size:14px;border:1px solid var(--gray-400);background:var(--white);
+  padding:6px 8px;width:100%;min-width:0;
+}
+.person input:focus{outline:2px solid var(--signal);outline-offset:-1px}
+.person .rm{color:var(--gray-500);font-size:15px;padding:2px 8px}
+.person .rm:hover{color:var(--red)}
+.add-person{
+  margin-top:16px;font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--gray-600);
+  padding:9px 14px;border:1px dashed var(--gray-400);
+  transition:color .18s var(--ease),border-color .18s var(--ease);
+}
+.add-person:hover{color:var(--black-1000);border-color:var(--gray-600)}
+.roster-empty{padding:40px 0;color:var(--gray-600);font-size:14px}
+@media(max-width:640px){
+  .person{grid-template-columns:1fr auto}
+  .person .title{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <img class="wordmark" src="assets/samsara-wordmark-gray950.png" alt="Samsara">
+    <nav class="toc">
+      <a href="index.html#projects">Active projects</a>
+      <a href="index.html#backlog">Backlog</a>
+      <a href="roster.html" class="is-here">Roster</a>
+      <a href="form-form/">Tools</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num" aria-hidden="true">03</span>
+      <h1>roster</h1>
+      <div class="tools">
+        <span class="roster-toast" id="roster-toast" role="status"></span>
+        <button type="button" id="roster-edit">edit roster</button>
+      </div>
+    </div>
+    <div id="roster-mount"><div class="roster-empty">loading…</div></div>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var API = location.hostname === "localhost"
+    ? "http://localhost:8788/api/roster"
+    : "https://samsara-design.pages.dev/api/roster";
+  var PW_KEY = "ops-roster-pw"; // separate from the site password on purpose
+
+  var mount = document.getElementById("roster-mount");
+  var editBtn = document.getElementById("roster-edit");
+  var toastEl = document.getElementById("roster-toast");
+  var toastTimer = null;
+  var people = [];
+  var editing = false;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 3200);
+  }
+
+  function render() {
+    mount.innerHTML = "";
+    if (!people.length && !editing) {
+      var e = document.createElement("div");
+      e.className = "roster-empty";
+      e.textContent = "No roster loaded yet.";
+      mount.appendChild(e);
+      return;
+    }
+    var teams = [];
+    people.forEach(function (p) {
+      var t = p.team || "team";
+      if (teams.indexOf(t) === -1) teams.push(t);
+    });
+    teams.forEach(function (team) {
+      var lab = document.createElement("p");
+      lab.className = "label team-label";
+      lab.textContent = team;
+      mount.appendChild(lab);
+      var list = document.createElement("div");
+      list.className = "people" + (editing ? " editing" : "");
+      people.forEach(function (p) {
+        if ((p.team || "team") !== team) return;
+        list.appendChild(editing ? editRow(p) : viewRow(p));
+      });
+      mount.appendChild(list);
+    });
+    if (editing) {
+      var add = document.createElement("button");
+      add.type = "button";
+      add.className = "add-person";
+      add.textContent = "+ add person";
+      add.addEventListener("click", function () {
+        people.push({ name: "", title: "", team: teams[0] || "", loc: "" });
+        render();
+        var inputs = mount.querySelectorAll(".person input");
+        if (inputs.length) inputs[inputs.length - 4].focus();
+      });
+      mount.appendChild(add);
+    }
+  }
+
+  function viewRow(p) {
+    var row = document.createElement("div");
+    row.className = "person";
+    var s = document.createElement("strong");
+    s.textContent = p.name;
+    row.appendChild(s);
+    var t = document.createElement("span");
+    t.className = "title";
+    t.textContent = p.title || "";
+    row.appendChild(t);
+    var l = document.createElement("span");
+    l.className = "loc";
+    l.textContent = p.loc || "—";
+    row.appendChild(l);
+    return row;
+  }
+
+  function editRow(p) {
+    var row = document.createElement("div");
+    row.className = "person";
+    ["name", "title", "team", "loc"].forEach(function (f) {
+      var i = document.createElement("input");
+      i.value = p[f] || "";
+      i.placeholder = f;
+      i.addEventListener("input", function () { p[f] = i.value; });
+      row.appendChild(i);
+    });
+    var rm = document.createElement("button");
+    rm.type = "button";
+    rm.className = "rm";
+    rm.textContent = "×";
+    rm.title = "Remove from roster";
+    rm.addEventListener("click", function () {
+      people.splice(people.indexOf(p), 1);
+      render();
+    });
+    row.appendChild(rm);
+    return row;
+  }
+
+  function load() {
+    fetch(API)
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (j) { people = j; render(); })
+      .catch(function () {
+        mount.innerHTML = "";
+        var e = document.createElement("div");
+        e.className = "roster-empty";
+        e.textContent = "Roster service unreachable. Try again in a minute.";
+        mount.appendChild(e);
+      });
+  }
+
+  function save() {
+    var pw = sessionStorage.getItem(PW_KEY) || prompt("Roster password:");
+    if (!pw) { toast("not saved", true); return; }
+    var cleaned = people.filter(function (p) { return (p.name || "").trim(); });
+    fetch(API, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Basic " + btoa("roster:" + pw),
+      },
+      body: JSON.stringify({ roster: cleaned }),
+    }).then(function (r) {
+      if (r.status === 401) {
+        sessionStorage.removeItem(PW_KEY);
+        throw new Error("wrong roster password");
+      }
+      if (!r.ok) throw new Error("couldn't save");
+      sessionStorage.setItem(PW_KEY, pw);
+      people = cleaned;
+      editing = false;
+      editBtn.textContent = "edit roster";
+      editBtn.classList.remove("primary");
+      render();
+      toast("roster saved");
+    }).catch(function (e) {
+      toast(String(e.message || e), true);
+    });
+  }
+
+  editBtn.addEventListener("click", function () {
+    if (editing) { save(); return; }
+    editing = true;
+    editBtn.textContent = "save roster";
+    editBtn.classList.add("primary");
+    render();
+  });
+
+  load();
+})();
+</script>
+
+</body>
+</html>
